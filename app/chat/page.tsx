@@ -47,8 +47,8 @@ export default function ChatPage() {
   // Handle form submission
   const handleSubmit = async (message: PromptInputMessage) => {
     if (!message.text?.trim()) return
-    await sendMessage({ text: message.text })
     setInput("")
+    await sendMessage({ text: message.text })
   }
 
   return (
