@@ -105,7 +105,7 @@ export default function ChatPage() {
                           </MessageContent>
                           {/* Message actions for the last assistant message */}
                           {message.role === "assistant" &&
-                            i === messages.length - 1 && (
+                            message.id === messages.at(-1)?.id && (
                               <MessageActions>
                                 <MessageAction
                                   onClick={() => regenerate()}
@@ -157,7 +157,7 @@ export default function ChatPage() {
         </Conversation>
 
         {/* Input area */}
-        <PromptInput onSubmit={handleSubmit} className="mt-4">
+        <PromptInput onSubmit={handleSubmit}>
           <PromptInputBody>
             <PromptInputTextarea
               placeholder="Type a message..."
