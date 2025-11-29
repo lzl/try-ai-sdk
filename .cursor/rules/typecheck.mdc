@@ -1,0 +1,5 @@
+---
+alwaysApply: true
+---
+
+Always run "npx tsc --noEmit" when you finish coding, then fix the type error.
