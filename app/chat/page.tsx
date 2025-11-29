@@ -1,7 +1,13 @@
 "use client"
 
 import { useChat } from "@ai-sdk/react"
-import { CopyIcon, RefreshCcwIcon, SparklesIcon } from "lucide-react"
+import type { ToolUIPart } from "ai"
+import {
+  CalendarIcon,
+  CopyIcon,
+  RefreshCcwIcon,
+  SparklesIcon,
+} from "lucide-react"
 import { useState } from "react"
 
 import {
@@ -37,12 +43,43 @@ import {
   SourcesContent,
   SourcesTrigger,
 } from "@/components/ai-elements/sources"
+import {
+  Tool,
+  ToolContent,
+  ToolHeader,
+  ToolInput,
+  ToolOutput,
+} from "@/components/ai-elements/tool"
+import { Button } from "@/components/ui/button"
+
+// Type definitions for the datetime tool
+type DateTimeToolOutput = {
+  iso: string
+  localeString: string
+  timezone: string
+}
+
+type DateTimeToolUIPart = ToolUIPart<{
+  get_current_datetime: {
+    input: Record<string, never>
+    output: DateTimeToolOutput
+  }
+}>
+
+// Format the datetime result for display
+function formatDateTimeResult(result: DateTimeToolOutput | undefined): string {
+  if (!result) return ""
+  return `**Current Time**
+
+**ISO Format:** ${result.iso}  
+**Local Time:** ${result.localeString}  
+**Timezone:** ${result.timezone}`
+}
 
 export default function ChatPage() {
   const [input, setInput] = useState("")
   const { messages, status, sendMessage, regenerate } = useChat()
 
-  // Handle form submission
   const handleSubmit = async (message: PromptInputMessage) => {
     if (!message.text?.trim()) return
     setInput("")
@@ -144,6 +181,34 @@ export default function ChatPage() {
                           <ReasoningContent>{part.text}</ReasoningContent>
                         </Reasoning>
                       )
+                    case "tool-get_current_datetime": {
+                      const toolPart = part as DateTimeToolUIPart
+                      return (
+                        <Tool
+                          key={`${message.id}-${i}`}
+                          defaultOpen={toolPart.state === "output-available"}
+                        >
+                          <ToolHeader
+                            title="Get Current Date & Time"
+                            type={toolPart.type}
+                            state={toolPart.state}
+                          />
+                          <ToolContent>
+                            <ToolInput input={toolPart.input} />
+                            <ToolOutput
+                              output={
+                                toolPart.output ? (
+                                  <MessageResponse>
+                                    {formatDateTimeResult(toolPart.output)}
+                                  </MessageResponse>
+                                ) : undefined
+                              }
+                              errorText={toolPart.errorText}
+                            />
+                          </ToolContent>
+                        </Tool>
+                      )
+                    }
                     default:
                       return null
                   }
