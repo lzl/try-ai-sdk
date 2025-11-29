@@ -7,6 +7,11 @@
     "ai-elements": {
       "command": "npx",
       "args": ["-y", "mcp-remote", "https://registry.ai-sdk.dev/api/mcp"]
+    },
+    "exa": {
+      "type": "http",
+      "url": "https://mcp.exa.ai/mcp",
+      "headers": {}
     }
   }
 }
