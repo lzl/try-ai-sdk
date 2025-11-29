@@ -9,10 +9,15 @@ export async function POST(req: Request) {
 	// Stream text using Vercel AI Gateway with Gemini model
 	const result = streamText({
 		model: "google/gemini-2.5-flash-lite",
-		system: "You are a helpful assistant.",
+		system:
+			"You are a helpful assistant that can answer questions and help with tasks.",
 		messages: convertToModelMessages(messages),
 	})
 
-	return result.toUIMessageStreamResponse()
+	// Send sources and reasoning back to the client
+	return result.toUIMessageStreamResponse({
+		sendSources: true,
+		sendReasoning: true,
+	})
 }
 
