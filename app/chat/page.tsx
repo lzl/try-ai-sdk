@@ -1,9 +1,9 @@
 "use client"
 
 import { useChat } from "@ai-sdk/react"
-import { DefaultChatTransport } from "ai"
 import { CopyIcon, RefreshCcwIcon, SparklesIcon } from "lucide-react"
 import { useState } from "react"
+
 import {
   Conversation,
   ConversationContent,
@@ -40,9 +40,7 @@ import {
 
 export default function ChatPage() {
   const [input, setInput] = useState("")
-  const { messages, status, sendMessage, regenerate, error } = useChat({
-    transport: new DefaultChatTransport({ api: "/api/chat" }),
-  })
+  const { messages, status, sendMessage, regenerate } = useChat()
 
   // Handle form submission
   const handleSubmit = async (message: PromptInputMessage) => {
@@ -52,16 +50,17 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex flex-col h-dvh min-w-0 max-w-4xl mx-auto px-6 pb-6 touch-pan-y">
-      {/* Messages area */}
-      <Conversation className="overflow-y-auto">
-        {messages.length === 0 ? (
-          <ConversationEmptyState
-            title="Gemini Assistant"
-            description="How can I help you?"
-            icon={<SparklesIcon className="size-8" />}
-          />
-        ) : (
+    <div className="max-w-4xl mx-auto p-6 relative size-full h-screen">
+      <div className="flex flex-col h-full">
+        {/* Messages area */}
+        <Conversation className="h-full">
+          {messages.length === 0 && (
+            <ConversationEmptyState
+              title="Assistant"
+              description="How can I help you?"
+              icon={<SparklesIcon className="size-8" />}
+            />
+          )}
           <ConversationContent>
             {messages.map((message) => (
               <div key={message.id}>
@@ -82,7 +81,7 @@ export default function ChatPage() {
                           .filter((part) => part.type === "source-url")
                           .map((part, i) => (
                             <Source
-                              key={`${message.id}-source-${i}`}
+                              key={`${message.id}-${i}`}
                               href={part.url}
                               title={part.url}
                             />
@@ -106,7 +105,7 @@ export default function ChatPage() {
                           </MessageContent>
                           {/* Message actions for the last assistant message */}
                           {message.role === "assistant" &&
-                            message.id === messages.at(-1)?.id && (
+                            i === messages.length - 1 && (
                               <MessageActions>
                                 <MessageAction
                                   onClick={() => regenerate()}
@@ -154,20 +153,11 @@ export default function ChatPage() {
             {/* Loader when waiting for response */}
             {status === "submitted" && <Loader />}
           </ConversationContent>
-        )}
-        <ConversationScrollButton />
-      </Conversation>
+          <ConversationScrollButton />
+        </Conversation>
 
-      {/* Error display */}
-      {error && (
-        <div className="px-4 py-2 text-center text-sm text-destructive">
-          Something went wrong. Please try again.
-        </div>
-      )}
-
-      {/* Input area */}
-      <div className="sticky bottom-0 z-1">
-        <PromptInput onSubmit={handleSubmit}>
+        {/* Input area */}
+        <PromptInput onSubmit={handleSubmit} className="mt-4">
           <PromptInputBody>
             <PromptInputTextarea
               placeholder="Type a message..."
