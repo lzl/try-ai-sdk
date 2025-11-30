@@ -1,6 +1,7 @@
 import type { GoogleGenerativeAIProviderOptions } from "@ai-sdk/google"
 import {
   convertToModelMessages,
+  // smoothStream,
   stepCountIs,
   streamText,
   type UIMessage,
@@ -45,6 +46,11 @@ export async function POST(req: Request) {
     //     },
     //   },
     // },
+    // experimental_transform: smoothStream(),
+    // experimental_transform: smoothStream({
+    //   delayInMs: 20, // optional: defaults to 10ms
+    //   chunking: "line", // optional: defaults to 'word'
+    // }),
   })
 
   return result.toUIMessageStreamResponse({

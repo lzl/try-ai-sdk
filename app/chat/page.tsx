@@ -135,7 +135,8 @@ export default function ChatPage() {
                             )}
                           </MessageContent>
                           {/* Message actions for the last assistant message */}
-                          {message.role === "assistant" &&
+                          {status === "ready" &&
+                            message.role === "assistant" &&
                             message.id === messages.at(-1)?.id && (
                               <MessageActions>
                                 <MessageAction
