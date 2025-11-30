@@ -45,6 +45,7 @@ import {
   ToolInput,
   ToolOutput,
 } from "@/components/ai-elements/tool"
+import { cn } from "@/lib/utils"
 
 // Type definitions for the datetime tool
 type DateTimeToolOutput = {
@@ -93,8 +94,14 @@ export default function ChatPage() {
             />
           )}
           <ConversationContent>
-            {messages.map((message) => (
-              <div key={message.id}>
+            {messages.map((message, i) => (
+              <div
+                key={message.id}
+                className={cn({
+                  "min-h-96":
+                    message.role === "assistant" && i === messages.length - 1,
+                })}
+              >
                 {/* Sources UI - render before message parts for assistant messages */}
                 {message.role === "assistant" &&
                   message.parts.filter((part) => part.type === "source-url")
@@ -211,7 +218,11 @@ export default function ChatPage() {
               </div>
             ))}
             {/* Loader when waiting for response */}
-            {status === "submitted" && <Loader />}
+            {status === "submitted" && (
+              <div className="min-h-96 text-center">
+                <Loader />
+              </div>
+            )}
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>
