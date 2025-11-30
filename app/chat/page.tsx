@@ -2,12 +2,7 @@
 
 import { useChat } from "@ai-sdk/react"
 import type { ToolUIPart } from "ai"
-import {
-  CalendarIcon,
-  CopyIcon,
-  RefreshCcwIcon,
-  SparklesIcon,
-} from "lucide-react"
+import { CopyIcon, RefreshCcwIcon, SparklesIcon } from "lucide-react"
 import { useState } from "react"
 
 import {
@@ -50,7 +45,6 @@ import {
   ToolInput,
   ToolOutput,
 } from "@/components/ai-elements/tool"
-import { Button } from "@/components/ui/button"
 
 // Type definitions for the datetime tool
 type DateTimeToolOutput = {
