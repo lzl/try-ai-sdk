@@ -94,14 +94,8 @@ export default function ChatPage() {
             />
           )}
           <ConversationContent>
-            {messages.map((message, i) => (
-              <div
-                key={message.id}
-                className={cn({
-                  "min-h-96":
-                    message.role === "assistant" && i === messages.length - 1,
-                })}
-              >
+            {messages.map((message) => (
+              <div key={message.id}>
                 {/* Sources UI - render before message parts for assistant messages */}
                 {message.role === "assistant" &&
                   message.parts.filter((part) => part.type === "source-url")
@@ -219,7 +213,7 @@ export default function ChatPage() {
             ))}
             {/* Loader when waiting for response */}
             {status === "submitted" && (
-              <div className="min-h-96 text-center">
+              <div className="min-h-12 text-center">
                 <Loader />
               </div>
             )}
