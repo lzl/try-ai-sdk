@@ -3,3 +3,4 @@
 - https://upstash.com/blog/realtime-ai-sdk
 - https://s2.dev/blog/agent-sessions
 - https://github.com/s2-streamstore/resumable-stream
+- https://useworkflow.dev/docs/ai
