@@ -2,12 +2,7 @@
 
 import { useChat } from "@ai-sdk/react"
 import type { ToolUIPart } from "ai"
-import {
-  CalendarIcon,
-  CopyIcon,
-  RefreshCcwIcon,
-  SparklesIcon,
-} from "lucide-react"
+import { CopyIcon, RefreshCcwIcon, SparklesIcon } from "lucide-react"
 import { useState } from "react"
 
 import {
@@ -50,7 +45,7 @@ import {
   ToolInput,
   ToolOutput,
 } from "@/components/ai-elements/tool"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 // Type definitions for the datetime tool
 type DateTimeToolOutput = {
@@ -141,7 +136,8 @@ export default function ChatPage() {
                             )}
                           </MessageContent>
                           {/* Message actions for the last assistant message */}
-                          {message.role === "assistant" &&
+                          {status === "ready" &&
+                            message.role === "assistant" &&
                             message.id === messages.at(-1)?.id && (
                               <MessageActions>
                                 <MessageAction
@@ -216,7 +212,11 @@ export default function ChatPage() {
               </div>
             ))}
             {/* Loader when waiting for response */}
-            {status === "submitted" && <Loader />}
+            {status === "submitted" && (
+              <div className="min-h-12 text-center">
+                <Loader />
+              </div>
+            )}
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>

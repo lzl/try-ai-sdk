@@ -1,0 +1,5 @@
+- https://chat-sdk.dev/
+- https://ai-sdk.dev/elements
+- https://upstash.com/blog/realtime-ai-sdk
+- https://s2.dev/blog/agent-sessions
+- https://github.com/s2-streamstore/resumable-stream
